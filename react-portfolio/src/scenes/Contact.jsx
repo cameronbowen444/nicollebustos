@@ -168,7 +168,7 @@ const Contact = () => {
 
               {/* LINKEDIN */}
               <a
-                href="https://www.linkedin.com/in/nicolle-bustos-3ab6801a3/"
+                href="https://www.linkedin.com/in/nicollebowen"
                 target="_blank"
                 rel="noreferrer"
                 className="flex items-center gap-3 rounded-xl border border-orange-300/20 bg-white/[0.06] px-4 py-3 transition hover:border-orange-400/40 hover:bg-white/[0.09]"
