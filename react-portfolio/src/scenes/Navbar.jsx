@@ -30,7 +30,7 @@ const Link = ({
         setSelectedPage(target);
         closeMenu?.();
       }}
-      className={`group relative transition-colors duration-300 ${
+      className={`group relative transition-colors duration-200 ${
         mobile
           ? `text-[2rem] font-semibold ${
               isSelected
@@ -48,7 +48,7 @@ const Link = ({
 
       {!mobile && (
         <span
-          className={`absolute -bottom-2 left-0 h-[2px] rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-400 transition-[width] duration-300 ${
+          className={`absolute -bottom-2 left-0 h-[2px] rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-400 transition-[width] duration-200 ${
             isSelected ? "w-full" : "w-0 group-hover:w-full"
           }`}
         />
@@ -58,45 +58,23 @@ const Link = ({
 };
 
 const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
-  const [isMenuToggled, setIsMenuToggled] = useState(false);
-  const [isMenuMounted, setIsMenuMounted] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isAboveSmallScreens = useMediaQuery("(min-width: 768px)");
 
-  const openMenu = () => {
-    setIsMenuMounted(true);
+  const openMenu = () => setIsMenuOpen(true);
+  const closeMenu = () => setIsMenuOpen(false);
 
-    requestAnimationFrame(() => {
-      setIsMenuToggled(true);
-    });
-  };
-
-  const closeMenu = () => {
-    setIsMenuToggled(false);
-  };
-
-  // Let close animation finish, then remove menu from DOM.
+  // Close mobile menu when switching to desktop.
   useEffect(() => {
-    if (isMenuToggled || !isMenuMounted) return;
-
-    const timer = setTimeout(() => {
-      setIsMenuMounted(false);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [isMenuToggled, isMenuMounted]);
-
-  // Remove mobile menu when switching to desktop.
-  useEffect(() => {
-    if (!isAboveSmallScreens) return;
-
-    setIsMenuToggled(false);
-    setIsMenuMounted(false);
+    if (isAboveSmallScreens) {
+      setIsMenuOpen(false);
+    }
   }, [isAboveSmallScreens]);
 
-  // Lock page scroll while menu exists.
+  // Lock page scroll only while menu is open.
   useEffect(() => {
-    if (!isMenuMounted) return;
+    if (!isMenuOpen) return;
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -104,11 +82,11 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
     return () => {
       document.body.style.overflow = previousOverflow;
     };
-  }, [isMenuMounted]);
+  }, [isMenuOpen]);
 
-  // Escape listener only exists while menu is mounted.
+  // Escape listener only while menu is open.
   useEffect(() => {
-    if (!isMenuMounted) return;
+    if (!isMenuOpen) return;
 
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -121,13 +99,13 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isMenuMounted]);
+  }, [isMenuOpen]);
 
   return (
     <>
       {/* NAVBAR */}
       <nav
-        className={`fixed left-0 top-0 z-50 w-full transition-[padding,background-color,border-color,box-shadow] duration-300 ${
+        className={`fixed left-0 top-0 z-50 w-full transition-[padding,background-color,border-color,box-shadow] duration-200 ${
           isTopOfPage
             ? "bg-transparent py-6"
             : "border-b border-pink-400/20 bg-[#08041f]/95 py-4 shadow-[0_10px_30px_rgba(236,72,153,0.10)] md:bg-[#08041f]/92"
@@ -144,7 +122,7 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
               src={nicolleLogo}
               alt="Nicolle Bustos"
               decoding="async"
-              className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105 md:h-14"
+              className="h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105 md:h-14"
             />
           </AnchorLink>
 
@@ -164,20 +142,20 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
               <AnchorLink
                 href="#contact"
                 onClick={() => setSelectedPage("contact")}
-                className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-400 px-6 py-3 text-sm font-bold text-white shadow-[0_10px_25px_rgba(236,72,153,0.24)] transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(236,72,153,0.34)]"
+                className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-400 px-6 py-3 text-sm font-bold text-white shadow-[0_10px_25px_rgba(236,72,153,0.24)] transition-[transform,box-shadow] duration-200 hover:-translate-y-1 hover:shadow-[0_16px_35px_rgba(236,72,153,0.34)]"
               >
                 Contact
 
-                <FiArrowUpRight className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <FiArrowUpRight className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </AnchorLink>
             </div>
           ) : (
             <button
               type="button"
               aria-label="Open navigation menu"
-              aria-expanded={isMenuToggled}
+              aria-expanded={isMenuOpen}
               onClick={openMenu}
-              className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-fuchsia-500 to-orange-400 text-xl text-white shadow-[0_8px_25px_rgba(236,72,153,0.30)] transition-transform duration-300 active:scale-95"
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 via-fuchsia-500 to-orange-400 text-xl text-white shadow-[0_8px_20px_rgba(236,72,153,0.25)] active:scale-95"
             >
               <FiMenu />
             </button>
@@ -186,12 +164,12 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
       </nav>
 
       {/* MOBILE MENU */}
-      {!isAboveSmallScreens && isMenuMounted && (
+      {!isAboveSmallScreens && (
         <div
           className={`fixed inset-0 z-[100] ${
-            isMenuToggled
-              ? "pointer-events-auto"
-              : "pointer-events-none"
+            isMenuOpen
+              ? "pointer-events-auto visible"
+              : "pointer-events-none invisible"
           }`}
         >
           {/* OVERLAY */}
@@ -199,31 +177,31 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
             type="button"
             aria-label="Close navigation menu"
             onClick={closeMenu}
-            className={`absolute inset-0 h-full w-full bg-[#321a35]/55 transition-opacity duration-300 ${
-              isMenuToggled ? "opacity-100" : "opacity-0"
+            className={`absolute inset-0 h-full w-full bg-[#321a35]/55 transition-opacity duration-200 ${
+              isMenuOpen ? "opacity-100" : "opacity-0"
             }`}
           />
 
           {/* SIDEBAR */}
           <aside
-            className={`absolute right-0 top-0 h-full w-[86%] max-w-[370px] overflow-hidden bg-gradient-to-br from-[#fff7fc] via-[#fce8f5] to-[#fff1e7] shadow-[-20px_0_50px_rgba(69,30,66,0.22)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              isMenuToggled ? "translate-x-0" : "translate-x-full"
+            className={`absolute right-0 top-0 h-full w-[86%] max-w-[370px] overflow-hidden bg-gradient-to-br from-[#fff7fc] via-[#fce8f5] to-[#fff1e7] shadow-[-14px_0_35px_rgba(69,30,66,0.18)] transition-transform duration-200 ease-out ${
+              isMenuOpen ? "translate-x-0" : "translate-x-full"
             }`}
           >
             {/* LIGHTWEIGHT COLOR ACCENTS */}
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -right-20 -top-16 h-52 w-52 rounded-full bg-pink-300/35"
+              className="pointer-events-none absolute -right-20 -top-16 h-52 w-52 rounded-full bg-pink-300/25"
             />
 
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -left-20 top-[38%] h-48 w-48 rounded-full bg-fuchsia-300/20"
+              className="pointer-events-none absolute -left-20 top-[38%] h-48 w-48 rounded-full bg-fuchsia-300/15"
             />
 
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -bottom-16 -right-14 h-52 w-52 rounded-full bg-orange-300/25"
+              className="pointer-events-none absolute -bottom-16 -right-14 h-52 w-52 rounded-full bg-orange-300/20"
             />
 
             {/* TOP ROW */}
@@ -242,20 +220,14 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
                 type="button"
                 aria-label="Close navigation menu"
                 onClick={closeMenu}
-                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/70 bg-white/80 text-xl text-[#84547e] shadow-md transition-[transform,background-color,color] duration-300 hover:rotate-90 hover:bg-white hover:text-pink-500"
+                className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/70 bg-white/85 text-xl text-[#84547e] shadow-sm transition-[transform,background-color,color] duration-200 hover:rotate-90 hover:bg-white hover:text-pink-500"
               >
                 <AiOutlineClose />
               </button>
             </div>
 
             {/* LINKS */}
-            <div
-              className={`relative z-10 mt-16 flex flex-col px-9 transition-[transform,opacity] duration-500 ${
-                isMenuToggled
-                  ? "translate-x-0 opacity-100"
-                  : "translate-x-12 opacity-0"
-              }`}
-            >
+            <div className="relative z-10 mt-16 flex flex-col px-9">
               {navLinks.map((link, index) => (
                 <div
                   key={link.target}
@@ -278,35 +250,23 @@ const Navbar = ({ isTopOfPage, selectedPage, setSelectedPage }) => {
             </div>
 
             {/* CONTACT BUTTON */}
-            <div
-              className={`relative z-10 px-9 pt-8 transition-[transform,opacity] duration-500 delay-75 ${
-                isMenuToggled
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-6 opacity-0"
-              }`}
-            >
+            <div className="relative z-10 px-9 pt-8">
               <AnchorLink
                 href="#contact"
                 onClick={() => {
                   setSelectedPage("contact");
                   closeMenu();
                 }}
-                className="group flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-400 px-6 py-4 text-sm font-bold text-white shadow-[0_12px_30px_rgba(236,72,153,0.28)] transition-transform duration-300 active:scale-[0.98]"
+                className="group flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-pink-500 via-fuchsia-500 to-orange-400 px-6 py-4 text-sm font-bold text-white shadow-[0_10px_24px_rgba(236,72,153,0.24)] active:scale-[0.98]"
               >
                 Let&apos;s Connect
 
-                <FiArrowUpRight className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <FiArrowUpRight className="transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </AnchorLink>
             </div>
 
             {/* BOTTOM TEXT */}
-            <div
-              className={`absolute bottom-8 left-9 right-9 z-10 transition-[transform,opacity] duration-500 delay-100 ${
-                isMenuToggled
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-5 opacity-0"
-              }`}
-            >
+            <div className="absolute bottom-8 left-9 right-9 z-10">
               <div className="h-px w-full bg-gradient-to-r from-transparent via-pink-400 to-transparent" />
 
               <p className="mt-5 text-center text-[10px] font-semibold tracking-[0.18em] text-[#a8729f]">
