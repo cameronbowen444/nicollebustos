@@ -1,8 +1,6 @@
 import React from "react";
 import {
   BsLinkedin,
-  BsInstagram,
-  BsFacebook,
 } from "react-icons/bs";
 
 const SocialMediaIcons = () => {
