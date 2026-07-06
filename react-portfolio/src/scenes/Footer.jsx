@@ -3,24 +3,17 @@ import SocialMediaIcons from "../components/SocialMediaIcons";
 
 const Footer = () => {
   return (
-    <footer
-      className="
-        relative
-        overflow-hidden
-        border-t
-        border-pink-300/15
-        bg-gradient-to-r
-        from-white/[0.07]
-        via-pink-100/[0.05]
-        to-fuchsia-100/[0.06]
-        py-8
-        backdrop-blur-md
-      "
-    >
+    <footer className="relative overflow-hidden border-t border-pink-300/15 bg-gradient-to-r from-white/[0.07] via-pink-100/[0.05] to-fuchsia-100/[0.06] py-8">
       {/* SOFT GLOWS */}
-      <div className="pointer-events-none absolute -left-24 bottom-0 h-48 w-48 rounded-full bg-pink-500/10 blur-[100px]" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -left-20 bottom-0 h-40 w-40 rounded-full bg-pink-500/10 blur-[75px] md:-left-24 md:h-48 md:w-48 md:blur-[100px]"
+      />
 
-      <div className="pointer-events-none absolute -right-24 top-0 h-48 w-48 rounded-full bg-orange-400/10 blur-[100px]" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-20 top-0 h-40 w-40 rounded-full bg-orange-400/10 blur-[75px] md:-right-24 md:h-48 md:w-48 md:blur-[100px]"
+      />
 
       <div className="relative z-10 mx-auto w-[90%] max-w-6xl">
         {/* TOP ROW */}
