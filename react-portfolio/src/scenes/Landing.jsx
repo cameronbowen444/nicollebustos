@@ -9,13 +9,7 @@ import nicolleImage from "../assets/nicolle.jpeg";
 const Landing = ({ setSelectedPage }) => {
   return (
     <section id="home" className="relative min-h-screen w-full overflow-hidden pt-24 md:pt-28">
-      {/* BACKGROUND GLOWS */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-        <div className="absolute -left-[12rem] top-[8%] h-[24rem] w-[24rem] rounded-full bg-pink-500/10 blur-[85px] md:-left-[18rem] md:h-[38rem] md:w-[38rem] md:blur-[130px]" />
-        <div className="absolute left-[15%] top-[18%] h-[22rem] w-[22rem] rounded-full bg-fuchsia-500/[0.07] blur-[90px] md:left-[20%] md:top-[15%] md:h-[34rem] md:w-[34rem] md:blur-[140px]" />
-        <div className="absolute -right-[14rem] top-[10%] h-[26rem] w-[26rem] rounded-full bg-purple-500/10 blur-[90px] md:-right-[18rem] md:top-[5%] md:h-[40rem] md:w-[40rem] md:blur-[140px]" />
-        <div className="absolute bottom-[-14rem] left-[20%] h-[24rem] w-[24rem] rounded-full bg-orange-400/[0.07] blur-[90px] md:bottom-[-20rem] md:left-[35%] md:h-[36rem] md:w-[36rem] md:blur-[140px]" />
-      </div>
+      
 
       {/* CONTENT */}
       <div className="relative z-10 mx-auto grid w-[90%] max-w-6xl items-center gap-12 pb-16 pt-8 lg:min-h-[calc(100vh-110px)] lg:grid-cols-[0.95fr_1.05fr] lg:gap-16 lg:pb-10 lg:pt-0">
